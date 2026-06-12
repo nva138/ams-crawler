@@ -10,6 +10,29 @@ Quellen unten). Sprache der Sessions: Deutsch.
 
 ---
 
+## KONTEXT (für ein frisches Gespräch — erst das hier, dann BAUANLEITUNG.md lesen)
+
+- **Wer:** Max, Coders-Bay-Abschlussprojekt. Spring-Anfänger, Vue+TS bekannt. Will
+  selber tippen, nicht copy-pasten. Keine KI-Spuren in Commits (knappe Conventional
+  Commits, keine Co-Authored-By-Zeilen). **Push macht Max selbst.**
+- **Sein Profil:** Hauptlücke = **Ablauf/Flow selbst herleiten**, nicht Syntax →
+  immer erst Klartext-Erklärung, dann Code. **Frust-/selbstwert-empfindlich:**
+  discountet eigene Leistung stark, obwohl er real viel selbst baut → ehrlich mit
+  konkreten Belegen gegensteuern, kein Pauschallob. Neigt zu Methoden-Wechsel/
+  Aufschieben → Konsistenz vor Intensität, an die Methode erinnern.
+- **Sein Schlüssel-Insight:** *Produzieren schlägt Konsumieren.* Tippen (hier) +
+  aus-dem-Kopf-Erklären sind beides Produktion. Lesen/Tutorials = nur Vorbereitung.
+- **Schwester-Projekt & Worked-Example-Bibliothek:** `/Users/maxmayer/dev/a11yforge`
+  — sein echtes Abschlussprojekt (verifizierter A11y-Auto-Fixer), GLEICHE
+  Architektur (Spring + ProcessBuilder + Node-Scraper). Hier studieren wir die
+  Zwillinge, kopieren aber nie. Dazu gibt es ein **Lernbuch** (Clean-Code-Stil,
+  ~101 S.) unter `a11yforge-doku/a11yforge-book/` — die Kapitel-Referenzen in der
+  BAUANLEITUNG zeigen dorthin.
+- **a11yforge-Stand (grob, Juni 2026):** Backend-MVP fertig (~95%), Frontend in
+  Arbeit, USP (Verify-Loop) läuft. Sein Teil = die Scan-/Scanner-Vertikale.
+
+---
+
 ## DIE EISERNE REGEL
 
 **Ich (Claude) schreibe NIEMALS den Lern-Code.** Keine Entities, Repositories,
