@@ -1,9 +1,7 @@
 package at.amscrawler.backend.jobposting;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +19,10 @@ public class JobPostingController {
     @GetMapping
     public List<JobPostingResponseDTO> allJobs(){
         return jobPostingService.getAllJobs();
+    }
+
+    @PostMapping
+    public JobPostingResponseDTO createJobPosting(@RequestBody JobPostingRequestDTO jobPostingRequestDTO){
+        return jobPostingService.createJob(jobPostingRequestDTO);
     }
 }
