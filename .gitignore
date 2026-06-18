@@ -11,3 +11,6 @@ dist/
 *.iml
 .DS_Store
 .vscode/
+# opencode local config
+opencode.json
+opencode.jsonc
