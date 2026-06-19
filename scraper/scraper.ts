@@ -1,5 +1,7 @@
 import { chromium } from "playwright";
 
+let nextPage = true;
+
 (async() => {
     const browser = await chromium.launch( {headless: false} );
     const page = await browser.newPage();
@@ -7,8 +9,27 @@ import { chromium } from "playwright";
     await page.getByTestId('job-autocomplete').getByTestId('ams-autocomplete-input').fill('FullStack');
     await page.getByTestId('location-autocomplete').getByTestId('ams-autocomplete-input').fill('Wien');
     await page.getByRole('button', {name: 'Suchen'}).press('Enter');
-    await page.waitForLoadState('networkidle');
-    const jobs = await page.getByRole('navigation', {name: 'Suchergebnisse'}).getByRole('listitem').all();
-    console.log(jobs.length);
+    while(nextPage) {
+        await page.waitForLoadState('networkidle');
+        const jobs = await page.getByRole('navigation', {name: 'Suchergebnisse'}).getByRole('listitem').all();
+
+        for (const job of jobs) {
+            const title = await job.getByRole('link').first().textContent();
+            const cleanTitle = title?.trim();
+            const url = await job.getByRole('link').first().getAttribute('href');
+            console.log(cleanTitle, url)
+        }
+        const nextButton = page?.getByTestId('ams-pagination-list-next-link');
+        const buttonExcists = await nextButton?.isVisible();
+
+        if(buttonExcists) {
+            await page?.getByTestId('ams-pagination-list-next-link').click();
+            await page.waitForTimeout(2000);
+
+        }
+        else {
+            nextPage = false;
+        }
+    }
         await page.pause();
 })()
