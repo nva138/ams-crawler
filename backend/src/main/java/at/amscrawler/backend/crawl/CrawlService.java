@@ -28,7 +28,8 @@ public class CrawlService {
         JobPostingRequestDTO[] jobs = objectMapper.readValue(json, JobPostingRequestDTO[].class);
 
         for(JobPostingRequestDTO job : jobs) {
-            jobPostingService.createJob(job);
+            if(!jobPostingService.existsByUrl(job.url())){
+            jobPostingService.createJob(job);}
         }
 
     }

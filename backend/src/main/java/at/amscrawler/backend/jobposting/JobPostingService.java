@@ -25,4 +25,8 @@ public class JobPostingService {
         JobPosting saved = jobPostingRepository.save(job);
         return new JobPostingResponseDTO(saved.getId(),  saved.getTitle(), saved.getCompany(), saved.getLocation(), saved.getDescription(), saved.getUrl());
     }
+
+    public boolean existsByUrl(String url) {
+        return jobPostingRepository.existsByUrl(url);
+    }
 }
