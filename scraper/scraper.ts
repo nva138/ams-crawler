@@ -1,6 +1,7 @@
 import { chromium } from "playwright";
 
-let nextPage = true;
+let hasNextPage = true;
+let currentPage = 1;
 const jobsList = [];
 
 (async() => {
@@ -20,7 +21,7 @@ const jobsList = [];
         await page
             .getByRole('button', {name: 'Suchen'})
             .press('Enter');
-        while (nextPage) {
+        while (hasNextPage) {
             await page.waitForLoadState('networkidle');
             const jobs = await page
                 .getByRole('navigation', {name: 'Suchergebnisse'})
@@ -51,21 +52,35 @@ const jobsList = [];
                 })
             }
 
-            const nextButton = page?.getByTestId('ams-pagination-list-next-link');
-            const buttonIsVisible = await nextButton?.isVisible();
-            const isDisabled =  await page.
-            locator('.disabled[data-testid="ams-pagination-list-next"]')
-                .isVisible()
-            console.error("visible:", buttonIsVisible, "disabled:", isDisabled);
+            const nextButton = page.getByTestId('ams-pagination-list-next-link');
+            const buttonIsVisible = await nextButton.isVisible();
 
+            const nextButtonWrapper = page.getByTestId('ams-pagination-list-next');
+            const wrapperClass = await nextButtonWrapper.getAttribute('class');
+            const isDisabled = wrapperClass?.includes('disabled');
+
+            const nextPage = currentPage + 1;
             if (buttonIsVisible && !isDisabled) {
-                await page?.getByTestId('ams-pagination-list-next-link').click();
-                await page.waitForTimeout(2000);
+                await page.getByTestId('ams-pagination-list-next-link').click();
 
+                try {
+
+                    await page.waitForFunction(
+                        (expectedPage) => window.location.href.includes(`page=${expectedPage}`),
+                        nextPage,
+                        { timeout: 10000 }
+                    )
+                    await page.waitForTimeout(700);
+
+                } catch (timeoutError) {
+                    console.error(`Timeout beim Laden von Seite ${nextPage}. Breche ab und sichere Daten.`);
+                    hasNextPage = false;
+                }
+            } else {
+                hasNextPage = false;
             }
-            else {
-                nextPage = false;
-            }
+            currentPage = nextPage;
+
         }
         const scraperOutput = JSON.stringify(jobsList)
         console.log(scraperOutput)
