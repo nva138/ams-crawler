@@ -11,7 +11,8 @@ public class ScraperProcessRunner {
 
     public String runScraper() throws IOException, InterruptedException {
 
-        ProcessBuilder processBuilder = new ProcessBuilder("node", "scraper.js").directory(new File("/Users/maxmayer/dev/ams-crawler/scraper"));
+        ProcessBuilder processBuilder = new ProcessBuilder("npx", "tsx", "scraper.ts")
+                .directory(new File("/Users/maxmayer/dev/ams-crawler/scraper"));
         Process process = processBuilder.start();
 
         String json = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
