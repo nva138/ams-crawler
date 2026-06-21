@@ -17,13 +17,13 @@ public class JobPostingService {
 
     public List<JobPostingResponseDTO> getAllJobs(){
         List<JobPosting> jobs = jobPostingRepository.findAll();
-        return jobs.stream().map(job -> new JobPostingResponseDTO(job.getId(), job.getTitle(), job.getCompany(), job.getLocation(), job.getDescription(), job.getUrl())).toList();
+        return jobs.stream().map(job -> new JobPostingResponseDTO(job.getId(), job.getTitle(), job.getCompany(), job.getLocation(), job.getDescription(), job.getUrl(), job.getLastUpdatedAt())).toList();
     }
 
     public JobPostingResponseDTO createJob(JobPostingRequestDTO request) {
-        JobPosting job = new JobPosting(request.title(), request.company(), request.location(), request.description(), request.url());
+        JobPosting job = new JobPosting(request.title(), request.company(), request.location(), request.description(), request.url(), request.lastUpdatedAt());
         JobPosting saved = jobPostingRepository.save(job);
-        return new JobPostingResponseDTO(saved.getId(),  saved.getTitle(), saved.getCompany(), saved.getLocation(), saved.getDescription(), saved.getUrl());
+        return new JobPostingResponseDTO(saved.getId(),  saved.getTitle(), saved.getCompany(), saved.getLocation(), saved.getDescription(), saved.getUrl(), saved.getLastUpdatedAt());
     }
 
     public boolean existsByUrl(String url) {

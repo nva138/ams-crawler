@@ -43,12 +43,20 @@ const jobsList = [];
                     .getByRole('link')
                     .first()
                     .getAttribute('href');
+                const lastUpdatedAt = await job
+                    .locator('#ams-search-joboffer-lastUpdatedAt')
+                    .textContent();
+                const lastUpdatedAtClean = lastUpdatedAt?.trim();
+                const [tag, monat, jahr] = (lastUpdatedAtClean ?? "").split(".");
+                const isoDate = `${jahr}-${monat}-${tag}`
+
                 jobsList.push({
                     title: cleanTitle,
                     company: company,
                     location: "Wien",
                     description: null,
-                    url: url
+                    url: url,
+                    lastUpdatedAt: isoDate
                 })
             }
 

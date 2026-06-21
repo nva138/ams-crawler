@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 
 @Entity
 public class JobPosting {
@@ -18,15 +20,17 @@ public class JobPosting {
     private String location;
     private String description;
     private String url;
+    private LocalDate lastUpdatedAt;
 
     public JobPosting(){};
 
-    public JobPosting(String title, String company, String location, String description, String url) {
+    public JobPosting(String title, String company, String location, String description, String url, LocalDate lastUpdatedAt) {
         this.title = title;
         this.company = company;
         this.location = location;
         this.description = description;
         this.url = url;
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     public Long getId() {
@@ -73,5 +77,7 @@ public class JobPosting {
         this.url = url;
     }
 
-
+    public LocalDate getLastUpdatedAt() {
+        return  lastUpdatedAt;
+    }
 }

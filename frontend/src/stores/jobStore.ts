@@ -7,17 +7,17 @@ export interface Job {
     company: string,
     location: string,
     description: string | null,
-    url: string;
+    url: string,
+    lastUpdatedAt: string | null;
 }
 
 export const useJobStore = defineStore("jobs", () => {
     const jobs = ref<Job[]>([]);
     const currentIndex = ref(0);
+    const loading = ref<boolean>(false);
 
-    // gemerkte Jobs aus localStorage laden (beim Start), sonst leer
     const saved = ref<Job[]>(JSON.parse(localStorage.getItem("savedJobs") ?? "[]"));
 
-    // bei jeder Änderung automatisch zurück in localStorage schreiben
     watch(saved, (val) => {
         localStorage.setItem("savedJobs", JSON.stringify(val));
     }, { deep: true });
@@ -39,5 +39,21 @@ export const useJobStore = defineStore("jobs", () => {
 
     }
 
-    return { jobs, fetchJobs, currentIndex, saved, next,  saveCurrent};
+
+    async function refresh() {
+        try{
+        loading.value = true;
+        await fetch("/api/crawl", { method: "POST" });
+        await fetchJobs();
+        currentIndex.value = 0;
+        }
+        catch (e) {
+            console.error(e)
+        }
+        finally {
+            loading.value = false;
+        }
+    }
+
+    return { jobs, fetchJobs, currentIndex, saved, next,  saveCurrent, loading, refresh};
 })

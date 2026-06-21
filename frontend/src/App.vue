@@ -5,13 +5,10 @@ import JobCard from "./components/JobCard.vue";
 
 const jobStore = useJobStore()
 
-// UI-State: welche Ansicht ist aktiv (gehört in die Komponente, nicht in den Store)
 const view = ref<"browse" | "saved">("browse")
 
-// aktueller Job im Karussell
 const currentJob = computed(() => jobStore.jobs[jobStore.currentIndex])
 
-// sind wir durch alle Jobs durch?
 const done = computed(
   () => jobStore.jobs.length > 0 && jobStore.currentIndex >= jobStore.jobs.length
 )
@@ -22,23 +19,44 @@ onMounted(() => jobStore.fetchJobs())
 <template>
   <div class="min-h-screen bg-slate-950 text-slate-100">
     <div class="mx-auto max-w-md px-4 pb-16 pt-8">
-      <!-- Terminal-Header -->
       <header class="mb-6">
         <div class="flex items-center gap-1.5">
           <span class="h-3 w-3 rounded-full bg-red-500/80"></span>
           <span class="h-3 w-3 rounded-full bg-yellow-500/80"></span>
           <span class="h-3 w-3 rounded-full bg-emerald-500/80"></span>
         </div>
-        <h1 class="mt-3 font-mono text-2xl font-bold tracking-tight text-emerald-400">
-          ~/ams-jobs
-        </h1>
+        <div class="mt-3 flex items-center justify-between">
+          <h1 class="font-mono text-2xl font-bold tracking-tight text-emerald-400">
+            ~/ams-jobs
+          </h1>
+
+          <button
+            @click="jobStore.refresh()"
+            :disabled="jobStore.loading"
+            title="Neu crawlen"
+            class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-800
+                   text-slate-400 transition hover:border-emerald-500/50 hover:text-emerald-300
+                   disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              class="h-5 w-5"
+              :class="{ 'animate-spin': jobStore.loading }"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
         <p class="mt-1 font-mono text-xs text-slate-500">
-          <span class="text-emerald-500">$</span> query --stack=fullstack --city=wien
+          <span class="text-emerald-500">$</span>
+          <template v-if="jobStore.loading">crawling… (~40s)</template>
+          <template v-else>query --stack=fullstack --city=wien</template>
           <span class="text-slate-600">→ {{ jobStore.jobs.length }} results</span>
         </p>
       </header>
 
-      <!-- Umschalter Browse / Gemerkte -->
       <div class="mb-5 flex gap-2 font-mono text-xs">
         <button
           @click="view = 'browse'"
@@ -60,7 +78,6 @@ onMounted(() => jobStore.fetchJobs())
         </button>
       </div>
 
-      <!-- BROWSE: Karussell mit aktuellem Job -->
       <div v-if="view === 'browse'">
         <template v-if="currentJob">
           <JobCard :job="currentJob" :index="jobStore.currentIndex" />
@@ -83,7 +100,6 @@ onMounted(() => jobStore.fetchJobs())
           </div>
         </template>
 
-        <!-- alle durch -->
         <div
           v-else-if="done"
           class="rounded-xl border border-slate-800 bg-slate-900/80 p-8 text-center font-mono text-sm text-slate-500"
@@ -92,11 +108,9 @@ onMounted(() => jobStore.fetchJobs())
           <p class="mt-2">alle {{ jobStore.jobs.length }} Jobs durchgesehen</p>
         </div>
 
-        <!-- lädt noch -->
         <p v-else class="font-mono text-sm text-slate-600">loading…</p>
       </div>
 
-      <!-- SAVED: gemerkte Jobs -->
       <div v-else>
         <ul v-if="jobStore.saved.length" class="flex flex-col gap-3">
           <li v-for="(job, i) in jobStore.saved" :key="job.url">
