@@ -53,7 +53,14 @@ export const useJobStore = defineStore("jobs", () => {
         finally {
             loading.value = false;
         }
+
+
+    }
+    function removeSaved(url: string) {
+        saved.value = saved.value.filter(job => job.url !== url)
     }
 
-    return { jobs, fetchJobs, currentIndex, saved, next,  saveCurrent, loading, refresh};
+
+
+    return { jobs, fetchJobs, currentIndex, saved, next,  saveCurrent, loading, refresh, removeSaved};
 })

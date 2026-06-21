@@ -113,8 +113,17 @@ onMounted(() => jobStore.fetchJobs())
 
       <div v-else>
         <ul v-if="jobStore.saved.length" class="flex flex-col gap-3">
-          <li v-for="(job, i) in jobStore.saved" :key="job.url">
+          <li v-for="(job, i) in jobStore.saved" :key="job.url" class="relative">
             <JobCard :job="job" :index="i" />
+            <button
+              @click="jobStore.removeSaved(job.url)"
+              title="Entfernen"
+              class="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-md
+                     border border-slate-700 bg-slate-900/80 font-mono text-xs text-slate-500
+                     transition hover:border-red-500/50 hover:text-red-400"
+            >
+              ✕
+            </button>
           </li>
         </ul>
         <p v-else class="font-mono text-sm text-slate-600">
