@@ -13,5 +13,31 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
 
+  backend:
+    build: .
+    container_name: ams-backend
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ams_db
+      SPRING_DATASOURCE_USERNAME: ams_user
+      SPRING_DATASOURCE_PASSWORD: ams_pwd
+    ports:
+      - "8081:8081"
+
+  web:
+    build: ./frontend
+    container_name: ams-web
+    depends_on:
+      - backend
+    environment:
+      SITE_ADDRESS: ":80"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+
 volumes:
   data:
+  caddy_data:
