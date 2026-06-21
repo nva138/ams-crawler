@@ -39,6 +39,7 @@ const jobsList = [];
                     .filter({hasText: 'Unternehmen'})
                     .getByTestId('key-value-pair-content')
                     .textContent();
+                const cleanCompany = company?.trim();
                 const url = await job
                     .getByRole('link')
                     .first()
@@ -52,7 +53,7 @@ const jobsList = [];
 
                 jobsList.push({
                     title: cleanTitle,
-                    company: company,
+                    company: cleanCompany,
                     location: "Wien",
                     description: null,
                     url: url,
