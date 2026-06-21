@@ -40,10 +40,11 @@ const jobsList = [];
                     .getByTestId('key-value-pair-content')
                     .textContent();
                 const cleanCompany = company?.trim();
-                const url = await job
+                const rawUrl = await job
                     .getByRole('link')
                     .first()
                     .getAttribute('href');
+                const url = rawUrl ? new URL(rawUrl, "https://jobs.ams.at").href : null;
                 const lastUpdatedAt = await job
                     .locator('#ams-search-joboffer-lastUpdatedAt')
                     .textContent();
