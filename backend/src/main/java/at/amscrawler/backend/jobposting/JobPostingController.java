@@ -26,4 +26,5 @@ public class JobPostingController {
     public JobPostingResponseDTO createJobPosting(@RequestBody JobPostingRequestDTO jobPostingRequestDTO){
         return jobPostingService.createJob(jobPostingRequestDTO);
     }
+
 }

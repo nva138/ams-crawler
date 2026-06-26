@@ -29,4 +29,7 @@ public class JobPostingService {
     public boolean existsByUrl(String url) {
         return jobPostingRepository.existsByUrl(url);
     }
+
+
+
 }
