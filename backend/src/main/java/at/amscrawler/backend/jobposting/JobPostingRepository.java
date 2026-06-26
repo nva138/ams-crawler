@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
     List<JobPosting> findByCompany(String company);
     boolean existsByUrl(String url);
-    List<JobPosting> findBy
 }
