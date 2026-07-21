@@ -14,3 +14,5 @@ dist/
 # opencode local config
 opencode.json
 opencode.jsonc
+# Secrets
+.env

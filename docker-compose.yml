@@ -6,10 +6,10 @@ services:
     container_name: ams-postgres
     environment:
       POSTGRES_USER: ams_user
-      POSTGRES_PASSWORD: ams_pwd
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ams_pwd}
       POSTGRES_DB: ams_db
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - data:/var/lib/postgresql/data
 
@@ -21,9 +21,9 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ams_db
       SPRING_DATASOURCE_USERNAME: ams_user
-      SPRING_DATASOURCE_PASSWORD: ams_pwd
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-ams_pwd}
     ports:
-      - "8081:8081"
+      - "127.0.0.1:8081:8081"
 
   web:
     build: ./frontend
